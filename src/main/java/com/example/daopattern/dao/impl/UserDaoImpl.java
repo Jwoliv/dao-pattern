@@ -2,6 +2,7 @@ package com.example.daopattern.dao.impl;
 
 import com.example.daopattern.dao.UserDao;
 import com.example.daopattern.entity.User;
+import com.example.daopattern.utils.SqlRequests.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
@@ -22,7 +23,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public User findById(Long id) {
         try(Connection connection = getConnection()) {
-            try (PreparedStatement prepStatement = connection.prepareStatement("SELECT * FROM _user WHERE id = ? ")) {
+            try (PreparedStatement prepStatement = connection.prepareStatement(SELECT_BY_ID)) {
                 prepStatement.setLong(1, id);
                 try (ResultSet resultSet = prepStatement.executeQuery()) {
                     if (resultSet.next()) {
@@ -39,7 +40,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public Boolean save(User user) {
         try (Connection connection = DriverManager.getConnection(url, username, password)) {
-            String sql = "INSERT INTO _user (surname, name, patronymic) VALUES (?, ?, ?)";
+            String sql = INSERT_NEW_USER;
             try (PreparedStatement prepStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
                 prepStatement.setString(1, user.getSurname());
                 prepStatement.setString(2, user.getName());
@@ -54,7 +55,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public Boolean deleteById(Long id) {
         try (Connection connection = getConnection()) {
-            try (PreparedStatement prepState = connection.prepareStatement("DELETE FROM _user WHERE id = ?")) {
+            try (PreparedStatement prepState = connection.prepareStatement(DELETE_USER_BY_ID)) {
                 prepState.setLong(1, id);
                 return prepState.execute();
             }
@@ -66,8 +67,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public Integer updateById(User user) {
         try (Connection connection = DriverManager.getConnection(url, username, password)) {
-            String sql = "UPDATE _user SET surname = ?, name = ?, patronymic = ? where id = ?";
-            try (PreparedStatement prepStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            try (PreparedStatement prepStatement = connection.prepareStatement(UPDATE_EXISTED_USER, Statement.RETURN_GENERATED_KEYS)) {
                 prepStatement.setString(1, user.getSurname());
                 prepStatement.setString(2, user.getName());
                 prepStatement.setString(3, user.getPatronymic());
@@ -83,7 +83,7 @@ public class UserDaoImpl implements UserDao {
     public List<User> findByFIO(String surname, String name, String patronymic) {
         List<User> users = new ArrayList<>();
         try(Connection connection = getConnection()) {
-            try (PreparedStatement prepState = connection.prepareStatement("SELECT * FROM _user WHERE surname = ? AND name = ? AND patronymic = ?")) {
+            try (PreparedStatement prepState = connection.prepareStatement(SELECT_ALL_BY_FIO)) {
                 prepState.setString(1, surname);
                 prepState.setString(2, name);
                 prepState.setString(3, patronymic);
