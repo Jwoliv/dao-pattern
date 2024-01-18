@@ -24,6 +24,10 @@ public class UserController {
         return userDao.deleteById(id);
     }
 
+    @PutMapping
+    private Boolean updateUserById(@RequestBody User user) {
+        return userDao.updateById(user);
+    }
 
     @PostMapping
     private User save(@RequestBody User user) {

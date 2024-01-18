@@ -57,7 +57,24 @@ public class UserDaoImpl implements UserDao {
         try (Connection connection = getConnection()) {
             try (PreparedStatement prepState = connection.prepareStatement("DELETE FROM _user WHERE id = ?")) {
                 prepState.setLong(1, id);
-                prepState.executeUpdate();
+                prepState.execute();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return true;
+    }
+
+    @Override
+    public Boolean updateById(User user) {
+        try (Connection connection = DriverManager.getConnection(url, username, password)) {
+            String sql = "UPDATE _user SET surname = ?, name = ?, patronymic = ? where id = ?";
+            try (PreparedStatement prepStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+                prepStatement.setString(1, user.getSurname());
+                prepStatement.setString(2, user.getName());
+                prepStatement.setString(3, user.getPatronymic());
+                prepStatement.setLong(4, user.getId());
+                prepStatement.executeUpdate();
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

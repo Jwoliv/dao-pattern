@@ -9,4 +9,5 @@ public interface UserDao {
     User save(User user);
     Boolean deleteById(Long id);
     List<User> findByFIO(String surname, String name, String patronymic);
+    Boolean updateById(User user);
 }
