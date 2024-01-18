@@ -25,12 +25,12 @@ public class UserController {
     }
 
     @PutMapping
-    private Boolean updateUserById(@RequestBody User user) {
+    private Integer updateUserById(@RequestBody User user) {
         return userDao.updateById(user);
     }
 
     @PostMapping
-    private User save(@RequestBody User user) {
+    private Boolean save(@RequestBody User user) {
         return userDao.save(user);
     }
 

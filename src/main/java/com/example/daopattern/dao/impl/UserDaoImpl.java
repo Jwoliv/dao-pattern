@@ -37,19 +37,18 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public User save(User user) {
+    public Boolean save(User user) {
         try (Connection connection = DriverManager.getConnection(url, username, password)) {
             String sql = "INSERT INTO _user (surname, name, patronymic) VALUES (?, ?, ?)";
             try (PreparedStatement prepStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
                 prepStatement.setString(1, user.getSurname());
                 prepStatement.setString(2, user.getName());
                 prepStatement.setString(3, user.getPatronymic());
-                prepStatement.execute();
+                return prepStatement.execute();
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return user;
     }
 
     @Override
@@ -57,16 +56,15 @@ public class UserDaoImpl implements UserDao {
         try (Connection connection = getConnection()) {
             try (PreparedStatement prepState = connection.prepareStatement("DELETE FROM _user WHERE id = ?")) {
                 prepState.setLong(1, id);
-                prepState.execute();
+                return prepState.execute();
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return true;
     }
 
     @Override
-    public Boolean updateById(User user) {
+    public Integer updateById(User user) {
         try (Connection connection = DriverManager.getConnection(url, username, password)) {
             String sql = "UPDATE _user SET surname = ?, name = ?, patronymic = ? where id = ?";
             try (PreparedStatement prepStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -74,12 +72,11 @@ public class UserDaoImpl implements UserDao {
                 prepStatement.setString(2, user.getName());
                 prepStatement.setString(3, user.getPatronymic());
                 prepStatement.setLong(4, user.getId());
-                prepStatement.executeUpdate();
+                return prepStatement.executeUpdate();
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return true;
     }
 
     @Override
