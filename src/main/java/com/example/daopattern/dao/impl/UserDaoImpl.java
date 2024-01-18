@@ -54,7 +54,15 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public Boolean deleteById(Long id) {
-        return null;
+        try (Connection connection = getConnection()) {
+            try (PreparedStatement prepState = connection.prepareStatement("DELETE FROM _user WHERE id = ?")) {
+                prepState.setLong(1, id);
+                prepState.executeUpdate();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return true;
     }
 
     @Override
@@ -65,8 +73,8 @@ public class UserDaoImpl implements UserDao {
                 prepState.setString(1, surname);
                 prepState.setString(2, name);
                 prepState.setString(3, patronymic);
-                try (ResultSet resultSet = prepState.getResultSet()) {
-                    if (resultSet.next()) {
+                try (ResultSet resultSet = prepState.executeQuery()) {
+                    while (resultSet.next()) {
                         users.add(extractUserFromResultSet(resultSet));
                     }
                 }
