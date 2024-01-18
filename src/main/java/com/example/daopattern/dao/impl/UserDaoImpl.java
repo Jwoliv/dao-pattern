@@ -41,8 +41,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public Boolean save(User user) {
         try (Connection connection = DriverManager.getConnection(url, username, password)) {
-            String sql = INSERT_NEW_USER;
-            try (PreparedStatement prepStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            try (PreparedStatement prepStatement = connection.prepareStatement(INSERT_NEW_USER, Statement.RETURN_GENERATED_KEYS)) {
                 prepStatement.setString(1, user.getSurname());
                 prepStatement.setString(2, user.getName());
                 prepStatement.setString(3, user.getPatronymic());
