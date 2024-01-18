@@ -36,7 +36,7 @@ public class UserController {
 
     @GetMapping
     private List<User> findById(
-            @RequestParam(name = "s") String surname,
+            @RequestParam("s") String surname,
             @RequestParam("n") String name,
             @RequestParam("p") String patronymic
     ) {
