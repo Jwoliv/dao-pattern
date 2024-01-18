@@ -2,13 +2,14 @@ package com.example.daopattern.dao.impl;
 
 import com.example.daopattern.dao.UserDao;
 import com.example.daopattern.entity.User;
-import com.example.daopattern.utils.SqlRequests.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.example.daopattern.utils.SqlRequests.*;
 
 @Repository
 public class UserDaoImpl implements UserDao {
