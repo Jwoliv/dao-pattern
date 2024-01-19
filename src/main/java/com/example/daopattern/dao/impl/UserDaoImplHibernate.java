@@ -5,6 +5,7 @@ import com.example.daopattern.entity.User;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.TypedQuery;
+import jakarta.persistence.criteria.*;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,8 +19,9 @@ public class UserDaoImplHibernate implements UserDaoHibernate {
 
     @Override
     public User findById(Long id) {
-        EntityManager em = emf.createEntityManager();
-        return em.find(User.class, id);
+        try (EntityManager em = emf.createEntityManager()) {
+            return em.find(User.class, id);
+        }
     }
 
     @Override
@@ -57,17 +59,41 @@ public class UserDaoImplHibernate implements UserDaoHibernate {
 
     @Override
     public List<User> findByFIO(String surname, String name, String patronymic) {
-        EntityManager em = emf.createEntityManager();
-        TypedQuery<User> query = em.createQuery(
-                "SELECT u FROM User u WHERE u.surname = :surname AND u.name = :name AND u.patronymic = :patronymic",
-                User.class
-        );
-        query.setParameter("surname", surname);
-        query.setParameter("name", name);
-        query.setParameter("patronymic", patronymic);
-        return query.getResultList();
+        try (EntityManager em = emf.createEntityManager()) {
+            TypedQuery<User> query = em.createNamedQuery(
+                    "get_all_by_surname_name_and_patronymic",
+                    User.class
+            );
+            query.setParameter("surname", surname);
+            query.setParameter("name", name);
+            query.setParameter("patronymic", patronymic);
+            return query.getResultList();
+        }
     }
 
+    @Override
+    public List<User> findBySurnameWithCriteria(String surname) {
+        try (EntityManager em = emf.createEntityManager()) {
+            CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+            CriteriaQuery<User> query = criteriaBuilder.createQuery(User.class);
+            Root<User> root = query.from(User.class);
+            ParameterExpression<String> paramSurname = criteriaBuilder.parameter(String.class);
+            Predicate surnamePredicate = criteriaBuilder.equal(root.get("surname"), paramSurname);
+            query.select(root).where(surnamePredicate);
+            TypedQuery<User> typedQuery = em.createQuery(query);
+            typedQuery.setParameter(paramSurname, surname);
+            return typedQuery.getResultList();
+        }
+    }
+
+    @Override
+    public List<User> findBySurnameWithoutCriteria(String surname) {
+        try (EntityManager em = emf.createEntityManager()) {
+            TypedQuery<User> typedQuery = em.createNamedQuery("get_all_by_surname", User.class);
+            typedQuery.setParameter("surname", surname);
+            return typedQuery.getResultList();
+        }
+    }
 
     @Override
     public Integer updateById(User user) {

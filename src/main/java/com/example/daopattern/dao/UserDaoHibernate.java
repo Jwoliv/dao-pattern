@@ -10,4 +10,6 @@ public interface UserDaoHibernate {
     Boolean deleteById(Long id);
     List<User> findByFIO(String surname, String name, String patronymic);
     Integer updateById(User user);
+    List<User> findBySurnameWithCriteria(String surname);
+    List<User> findBySurnameWithoutCriteria(String surname);
 }

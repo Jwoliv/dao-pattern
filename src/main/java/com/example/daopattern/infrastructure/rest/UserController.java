@@ -1,8 +1,6 @@
 package com.example.daopattern.infrastructure.rest;
 
 import com.example.daopattern.dao.UserDaoHibernate;
-import com.example.daopattern.dao.UserDaoJT;
-import com.example.daopattern.dao.UserDao;
 import com.example.daopattern.entity.User;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,11 +40,16 @@ public class UserController {
     }
 
     @GetMapping
-    private List<User> findById(
+    private List<User> findBySurnameNameAndPatronymic(
             @RequestParam("s") String surname,
             @RequestParam("n") String name,
             @RequestParam("p") String patronymic
     ) {
         return userDao.findByFIO(surname, name, patronymic);
+    }
+
+    @GetMapping("/surname")
+    private List<User> findBySurname(@RequestParam("s") String surname) {
+        return userDao.findBySurnameWithoutCriteria(surname);
     }
 }
