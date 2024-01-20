@@ -1,8 +1,7 @@
 package com.example.daopattern.entity;
 
+import jakarta.persistence.*;
 import lombok.*;
-
-import javax.persistence.*;
 
 @Data
 @Entity
@@ -10,6 +9,16 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "_user")
+@NamedQueries({
+        @NamedQuery(
+                name = "User.getAllBySurnameNameAndPatronymicNativeQuery",
+                query = "FROM User u WHERE u.surname = :surname AND u.name = :name AND u.patronymic = :patronymic"
+        ),
+        @NamedQuery(
+                name = "User.getAllBySurnameNativeQuery",
+                query = "FROM User u WHERE u.surname = :surname"
+        )
+})
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
