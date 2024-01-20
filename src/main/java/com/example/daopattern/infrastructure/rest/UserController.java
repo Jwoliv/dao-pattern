@@ -4,6 +4,7 @@ import com.example.daopattern.dao.UserDaoJT;
 import com.example.daopattern.entity.User;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -45,5 +46,16 @@ public class UserController {
             @RequestParam("o") Integer offset
     ) {
         return userDao.findByFIO(surname, name, patronymic, limit, offset);
+    }
+
+    @GetMapping("/p")
+    private List<User> findByIdWithPageable(
+            @RequestParam("s") String surname,
+            @RequestParam("n") String name,
+            @RequestParam("p") String patronymic,
+            @RequestParam("pn") Integer pageNumber,
+            @RequestParam("ps") Integer pageSize
+    ) {
+        return userDao.findByFIO(surname, name, patronymic, PageRequest.of(pageNumber, pageSize));
     }
 }

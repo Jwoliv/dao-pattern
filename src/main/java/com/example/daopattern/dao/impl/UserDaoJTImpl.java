@@ -6,6 +6,7 @@ import com.example.daopattern.mapper.UserMapper;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
@@ -41,6 +42,11 @@ public class UserDaoJTImpl implements UserDaoJT {
     @Override
     public List<User> findByFIO(String surname, String name, String patronymic, Integer limit, Integer offset) {
         return jdbcTemplate.query(SELECT_ALL_BY_FIO, userMapper, surname, name, patronymic, limit, offset);
+    }
+
+    @Override
+    public List<User> findByFIO(String surname, String name, String patronymic, Pageable pageable) {
+        return jdbcTemplate.query(SELECT_ALL_BY_FIO, userMapper, surname, name, patronymic, pageable.getPageSize(), pageable.getOffset());
     }
 
     @Override
