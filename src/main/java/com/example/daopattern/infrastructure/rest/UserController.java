@@ -4,6 +4,7 @@ import com.example.daopattern.dao.UserDaoHibernate;
 import com.example.daopattern.entity.User;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -43,9 +44,11 @@ public class UserController {
     private List<User> findBySurnameNameAndPatronymic(
             @RequestParam("s") String surname,
             @RequestParam("n") String name,
-            @RequestParam("p") String patronymic
+            @RequestParam("p") String patronymic,
+            @RequestParam("ps") Integer pageSize,
+            @RequestParam("pn") Integer pageNumber
     ) {
-        return userDao.findByFIO(surname, name, patronymic);
+        return userDao.findByFIO(surname, name, patronymic, PageRequest.of(pageNumber, pageSize));
     }
 
     @GetMapping("/surname")

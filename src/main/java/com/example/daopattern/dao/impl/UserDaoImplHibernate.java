@@ -8,6 +8,7 @@ import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.*;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -58,7 +59,7 @@ public class UserDaoImplHibernate implements UserDaoHibernate {
     }
 
     @Override
-    public List<User> findByFIO(String surname, String name, String patronymic) {
+    public List<User> findByFIO(String surname, String name, String patronymic, Pageable pageable) {
         try (EntityManager em = emf.createEntityManager()) {
             TypedQuery<User> query = em.createNamedQuery(
                     "get_all_by_surname_name_and_patronymic",
@@ -67,6 +68,9 @@ public class UserDaoImplHibernate implements UserDaoHibernate {
             query.setParameter("surname", surname);
             query.setParameter("name", name);
             query.setParameter("patronymic", patronymic);
+
+            query.setMaxResults(pageable.getPageSize()); // setMaxResults pageSize
+            query.setFirstResult((int) pageable.getOffset()); // offset = pageable.getPageSize() * pageable.getPageNumber()
             return query.getResultList();
         }
     }
