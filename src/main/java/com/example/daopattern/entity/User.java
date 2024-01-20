@@ -1,8 +1,7 @@
 package com.example.daopattern.entity;
 
+import jakarta.persistence.*;
 import lombok.*;
-
-import javax.persistence.*;
 
 @Data
 @Entity
