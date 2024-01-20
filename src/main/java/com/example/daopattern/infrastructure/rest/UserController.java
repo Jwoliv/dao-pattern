@@ -5,7 +5,6 @@ import com.example.daopattern.repository.UserRepository;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -44,7 +43,6 @@ public class UserController {
             @RequestParam("pn") Integer pageNumber,
             @RequestParam("ps") Integer pageSize
     ) {
-        Pageable pageable = PageRequest.of(pageNumber, pageSize);
-        return userRepository.findBySurnameAndNameAndPatronymic(surname, name, patronymic, pageable);
+        return userRepository.findBySurnameAndNameAndPatronymic(surname, name, patronymic, PageRequest.of(pageNumber, pageSize));
     }
 }
