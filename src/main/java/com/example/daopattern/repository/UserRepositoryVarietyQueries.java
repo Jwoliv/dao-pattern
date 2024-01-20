@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface UserRepositoryVarietyQueries extends JpaRepository<User, Long> {
     @Query(nativeQuery = true, value = "SELECT * FROM _user AS U WHERE U.surname = :surname")
     List<User> getAllBySurnameWithNativeQuery(@Param("surname") String surname);
 
