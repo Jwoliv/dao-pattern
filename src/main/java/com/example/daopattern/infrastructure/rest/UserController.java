@@ -5,6 +5,7 @@ import com.example.daopattern.repository.UserRepository;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,13 +37,14 @@ public class UserController {
     }
 
     @GetMapping
-    private List<User> findById(
+    private List<User> findBySurnameAndNameAndPatronymic(
             @RequestParam("s") String surname,
             @RequestParam("n") String name,
             @RequestParam("p") String patronymic,
             @RequestParam("pn") Integer pageNumber,
-            @RequestParam("ps") Integer pageSize
+            @RequestParam("ps") Integer pageSize,
+            @RequestParam("sf") String sortedField
     ) {
-        return userRepository.findBySurnameAndNameAndPatronymic(surname, name, patronymic, PageRequest.of(pageNumber, pageSize));
+        return userRepository.findBySurnameAndNameAndPatronymic(surname, name, patronymic, PageRequest.of(pageNumber, pageSize, Sort.by(sortedField).descending()));
     }
 }
