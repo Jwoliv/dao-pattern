@@ -61,7 +61,7 @@ public class UserDaoImplHibernate implements UserDaoHibernate {
     public List<User> findByFIO(String surname, String name, String patronymic) {
         try (EntityManager em = emf.createEntityManager()) {
             TypedQuery<User> query = em.createNamedQuery(
-                    "get_all_by_surname_name_and_patronymic",
+                    "User.getAllBySurnameNameAndPatronymicNativeQuery",
                     User.class
             );
             query.setParameter("surname", surname);
@@ -89,7 +89,7 @@ public class UserDaoImplHibernate implements UserDaoHibernate {
     @Override
     public List<User> findBySurnameWithoutCriteria(String surname) {
         try (EntityManager em = emf.createEntityManager()) {
-            TypedQuery<User> typedQuery = em.createNamedQuery("get_all_by_surname", User.class);
+            TypedQuery<User> typedQuery = em.createNamedQuery("User.getAllBySurnameNativeQuery", User.class);
             typedQuery.setParameter("surname", surname);
             return typedQuery.getResultList();
         }

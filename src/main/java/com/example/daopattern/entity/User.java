@@ -11,12 +11,12 @@ import lombok.*;
 @Table(name = "_user")
 @NamedQueries({
         @NamedQuery(
-                name = "get_all_by_surname_name_and_patronymic",
-                query = "SELECT u FROM User u WHERE u.surname = :surname AND u.name = :name AND u.patronymic = :patronymic"
+                name = "User.getAllBySurnameNameAndPatronymicNativeQuery",
+                query = "FROM User u WHERE u.surname = :surname AND u.name = :name AND u.patronymic = :patronymic"
         ),
         @NamedQuery(
-                name = "get_all_by_surname",
-                query = "SELECT u FROM User u WHERE u.surname = :surname"
+                name = "User.getAllBySurnameNativeQuery",
+                query = "FROM User u WHERE u.surname = :surname"
         )
 })
 public class User {
