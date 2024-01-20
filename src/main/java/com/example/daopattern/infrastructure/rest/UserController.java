@@ -40,8 +40,10 @@ public class UserController {
     private List<User> findById(
             @RequestParam("s") String surname,
             @RequestParam("n") String name,
-            @RequestParam("p") String patronymic
+            @RequestParam("p") String patronymic,
+            @RequestParam("l") Integer limit,
+            @RequestParam("o") Integer offset
     ) {
-        return userDao.findByFIO(surname, name, patronymic);
+        return userDao.findByFIO(surname, name, patronymic, limit, offset);
     }
 }

@@ -8,6 +8,6 @@ public interface UserDaoJT {
     User findById(Long id);
     Boolean save(User user);
     Boolean deleteById(Long id);
-    List<User> findByFIO(String surname, String name, String patronymic);
+    List<User> findByFIO(String surname, String name, String patronymic, Integer limit, Integer offset);
     Integer updateById(User user);
 }

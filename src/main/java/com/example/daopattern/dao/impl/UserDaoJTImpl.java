@@ -2,7 +2,6 @@ package com.example.daopattern.dao.impl;
 
 import com.example.daopattern.dao.UserDaoJT;
 import com.example.daopattern.entity.User;
-import com.example.daopattern.mapper.UserListMapper;
 import com.example.daopattern.mapper.UserMapper;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -22,8 +21,6 @@ public class UserDaoJTImpl implements UserDaoJT {
     private JdbcTemplate jdbcTemplate;
     @Setter(onMethod = @__(@Autowired))
     private UserMapper userMapper;
-    @Setter(onMethod = @__(@Autowired))
-    private UserListMapper userListMapper;
 
     @Override
     public User findById(Long id) {
@@ -42,8 +39,8 @@ public class UserDaoJTImpl implements UserDaoJT {
     }
 
     @Override
-    public List<User> findByFIO(String surname, String name, String patronymic) {
-        return jdbcTemplate.queryForObject(SELECT_ALL_BY_FIO, userListMapper, surname, name, patronymic);
+    public List<User> findByFIO(String surname, String name, String patronymic, Integer limit, Integer offset) {
+        return jdbcTemplate.query(SELECT_ALL_BY_FIO, userMapper, surname, name, patronymic, limit, offset);
     }
 
     @Override
