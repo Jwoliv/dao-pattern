@@ -6,6 +6,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.sql.Timestamp;
 
 @Data
 @Entity
@@ -33,6 +38,14 @@ public class EntityExample {
     private String baseField4;
     @Enumerated(EnumType.STRING)
     private Status status;
+    @CreationTimestamp
+    @Column(updatable = false)
+    @DateTimeFormat(pattern = "MM/dd/yyyy HH:mm ")
+    private Timestamp createdTime;
+    @UpdateTimestamp
+    @Column
+    @DateTimeFormat(pattern = "MM/dd/yyyy HH:mm")
+    private Timestamp updatedTime;
     @Embedded
     private EmbEntity embEntity;
 }
