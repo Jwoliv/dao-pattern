@@ -1,5 +1,6 @@
 package com.example.daopattern.entity.embedded;
 
+import com.example.daopattern.enums.Status;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,6 +31,8 @@ public class EntityExample {
     private String baseField2;
     private String baseField3;
     private String baseField4;
+    @Enumerated(EnumType.STRING)
+    private Status status;
     @Embedded
     private EmbEntity embEntity;
 }
