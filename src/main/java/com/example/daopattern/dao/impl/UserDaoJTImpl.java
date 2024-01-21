@@ -31,7 +31,7 @@ public class UserDaoJTImpl implements UserDaoJT {
 
     @Override
     public Boolean save(User user) {
-        return jdbcTemplate.update(INSERT_NEW_USER, userMapper, user.getSurname(), user.getName(), user.getPatronymic()) > 0;
+        return jdbcTemplate.update(INSERT_NEW_USER, user.getSurname(), user.getName(), user.getPatronymic()) > 0;
     }
 
     @Override
