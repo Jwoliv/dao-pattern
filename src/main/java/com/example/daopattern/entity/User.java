@@ -8,7 +8,10 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "_user")
+@Table(name = "_user",indexes = {
+        @Index(name = "surname_idx", columnList = "surname"),
+        @Index(name = "name_idx", columnList = "name")
+})
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
