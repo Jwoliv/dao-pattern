@@ -1,6 +1,7 @@
 package com.example.daopattern.entity;
 
 import com.example.daopattern.callback.UserJPACallback;
+import com.example.daopattern.convert.ExampleConverter;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,5 +21,6 @@ public class User {
     private Long id;
     private String surname;
     private String name;
+    @Convert(converter = ExampleConverter.class)
     private String patronymic;
 }
