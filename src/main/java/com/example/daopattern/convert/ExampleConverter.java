@@ -12,7 +12,6 @@ public class ExampleConverter implements AttributeConverter<String, String> {
 
     @Override
     public String convertToEntityAttribute(String dbData) {
-        String data = new StringBuilder(dbData).reverse().toString();
-        return data.substring(3);
+        return new StringBuilder(dbData).reverse().toString().replace("1", "");
     }
 }
