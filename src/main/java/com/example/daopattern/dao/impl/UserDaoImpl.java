@@ -45,7 +45,8 @@ public class UserDaoImpl implements UserDao {
                 prepStatement.setString(1, user.getSurname());
                 prepStatement.setString(2, user.getName());
                 prepStatement.setString(3, user.getPatronymic());
-                return prepStatement.execute();
+                prepStatement.execute();
+                return true;
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
