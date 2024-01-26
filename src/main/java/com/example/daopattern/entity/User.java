@@ -1,8 +1,11 @@
 package com.example.daopattern.entity;
 
-import lombok.*;
-
-import javax.persistence.*;
+import com.example.daopattern.callback.UserJPACallback;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Entity
@@ -10,6 +13,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "_user")
+@EntityListeners({UserJPACallback.class})
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

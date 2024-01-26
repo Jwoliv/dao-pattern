@@ -1,9 +1,11 @@
 package com.example.daopattern.infrastructure.rest;
 
-import com.example.daopattern.dao.UserDao;
 import com.example.daopattern.entity.User;
+import com.example.daopattern.repository.UserRepository;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,34 +14,37 @@ import java.util.List;
 @RequestMapping("/user")
 public class UserController {
     @Setter(onMethod = @__(@Autowired))
-    private UserDao userDao;
+    private UserRepository userRepository;
 
     @GetMapping("/{id}")
     private User findUserById(@PathVariable("id") Long id) {
-        return userDao.findById(id);
+        return userRepository.findById(id).orElseThrow();
     }
 
     @DeleteMapping("/{id}")
-    private Boolean deleteUserById(@PathVariable("id") Long id) {
-        return userDao.deleteById(id);
+    private void deleteUserById(@PathVariable("id") Long id) {
+        userRepository.deleteById(id);
     }
 
     @PutMapping
-    private Integer updateUserById(@RequestBody User user) {
-        return userDao.updateById(user);
+    private void updateUserById(@RequestBody User user) {
+        userRepository.save(user);
     }
 
     @PostMapping
-    private Boolean save(@RequestBody User user) {
-        return userDao.save(user);
+    private void save(@RequestBody User user) {
+        userRepository.save(user);
     }
 
     @GetMapping
-    private List<User> findById(
+    private List<User> findBySurnameAndNameAndPatronymic(
             @RequestParam("s") String surname,
             @RequestParam("n") String name,
-            @RequestParam("p") String patronymic
+            @RequestParam("p") String patronymic,
+            @RequestParam("pn") Integer pageNumber,
+            @RequestParam("ps") Integer pageSize,
+            @RequestParam("sf") String sortedField
     ) {
-        return userDao.findByFIO(surname, name, patronymic);
+        return userRepository.findBySurnameAndNameAndPatronymic(surname, name, patronymic, PageRequest.of(pageNumber, pageSize, Sort.by(sortedField).descending()));
     }
 }
